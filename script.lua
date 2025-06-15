@@ -17,7 +17,7 @@ local SoundService = game:GetService("SoundService")
 local ContentProvider = game:GetService("ContentProvider")
 
 local JUMPSCARE_IMAGE_ID = "rbxassetid://112366012470321"
-local JUMPSCARE_SOUND_ID = "rbxassetid://125597394353188"
+local JUMPSCARE_SOUND_ID = "rbxassetid://80156405968805"
 local BLINK_COUNT = 4
 local BLINK_SPEED = 0.1
 local IMAGE_DISPLAY_DURATION = 1.5
@@ -54,31 +54,29 @@ local function showWelcomeMessage(playerGui)
 	label.TextTransparency = 1
 	label.TextScaled = true
 	label.Font = Enum.Font.GothamBlack
+	label.Position = UDim2.new(0.5, 0, 0.5, 0)
+	label.AnchorPoint = Vector2.new(0.5, 0.5)
 	label.Parent = container
+
+	local textConstraint = Instance.new("UITextSizeConstraint")
+	textConstraint.MinTextSize = 14
+	textConstraint.MaxTextSize = 48 -- Adjust to a smaller max size for mobile
+	textConstraint.Parent = label
 
 	local glow = Instance.new("UIStroke", label)
 	glow.Color = Color3.fromRGB(255, 255, 255)
 	glow.Thickness = 2
 	glow.Transparency = 0.4
 
-	label.TextScaled = false
-	label.TextSize = 32
-	label.Position = UDim2.new(0.5, 0, 0.5, 0)
-	label.AnchorPoint = Vector2.new(0.5, 0.5)
-
+	-- Animate in: Fade only
 	TweenService:Create(bg, TweenInfo.new(0.8), {BackgroundTransparency = 0}):Play()
-	TweenService:Create(label, TweenInfo.new(0.8), {
-		TextTransparency = 0,
-		TextSize = 60
-	}):Play()
+	TweenService:Create(label, TweenInfo.new(0.8), {TextTransparency = 0}):Play()
 
 	wait(WELCOME_DURATION + 0.8)
 
+	-- Animate out: Fade
 	TweenService:Create(bg, TweenInfo.new(0.8), {BackgroundTransparency = 1}):Play()
-	TweenService:Create(label, TweenInfo.new(0.8), {
-		TextTransparency = 1,
-		TextSize = 30
-	}):Play()
+	TweenService:Create(label, TweenInfo.new(0.8), {TextTransparency = 1}):Play()
 
 	wait(0.8)
 	welcomeGui:Destroy()
